@@ -3,6 +3,8 @@ from urllib.parse import urlparse
 
 import yt_dlp
 
+from youwatch import progress
+
 
 @dataclass
 class VideoResult:
@@ -12,6 +14,7 @@ class VideoResult:
     duration: int | None
     thumbnail_url: str | None
     webpage_url: str
+    resume_seconds: float | None = None
 
 
 def _entry_to_result(entry: dict) -> VideoResult:
@@ -30,6 +33,7 @@ def _entry_to_result(entry: dict) -> VideoResult:
         duration=entry.get("duration"),
         thumbnail_url=thumbnail_url,
         webpage_url=webpage_url,
+        resume_seconds=progress.resume_position(webpage_url) if webpage_url else None,
     )
 
 

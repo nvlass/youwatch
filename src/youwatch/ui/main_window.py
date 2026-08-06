@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
 
 from youwatch import player, search
 from youwatch.search import VideoResult
-from youwatch.ui.results_model import ResultsModel, WEBPAGE_URL_ROLE
+from youwatch.ui.results_model import ResultsModel, RESUME_SECONDS_ROLE, WEBPAGE_URL_ROLE
 
 
 class SearchThread(QThread):
@@ -92,7 +92,8 @@ class MainWindow(QMainWindow):
         url = index.data(WEBPAGE_URL_ROLE)
         if not url:
             return
+        start_seconds = index.data(RESUME_SECONDS_ROLE)
         try:
-            player.play(url)
+            player.play(url, start_seconds=start_seconds)
         except Exception as exc:
             QMessageBox.critical(self, "Playback failed", str(exc))

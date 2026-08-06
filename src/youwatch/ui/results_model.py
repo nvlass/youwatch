@@ -5,6 +5,7 @@ from PySide6.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequ
 from youwatch.search import VideoResult
 
 WEBPAGE_URL_ROLE = Qt.ItemDataRole.UserRole + 1
+RESUME_SECONDS_ROLE = Qt.ItemDataRole.UserRole + 2
 
 
 def _format_duration(seconds: int | None) -> str:
@@ -64,9 +65,14 @@ class ResultsModel(QAbstractListModel):
         result = self._results[index.row()]
         if role == Qt.ItemDataRole.DisplayRole:
             duration = _format_duration(result.duration)
-            return f"{result.title}\n{result.uploader}  ·  {duration}"
+            text = f"{result.title}\n{result.uploader}  ·  {duration}"
+            if result.resume_seconds:
+                text += f"\nResume from {_format_duration(result.resume_seconds)}"
+            return text
         if role == Qt.ItemDataRole.DecorationRole:
             return self._thumbnails.get(index.row())
         if role == WEBPAGE_URL_ROLE:
             return result.webpage_url
+        if role == RESUME_SECONDS_ROLE:
+            return result.resume_seconds
         return None
