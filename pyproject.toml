@@ -1,0 +1,19 @@
+[project]
+name = "youwatch"
+version = "0.1.0"
+description = "Ad-free YouTube search-and-stream desktop app"
+requires-python = ">=3.11"
+dependencies = [
+    "yt-dlp",
+    "PySide6",
+]
+
+[project.scripts]
+youwatch = "youwatch.main:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
